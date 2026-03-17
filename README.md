@@ -2,6 +2,9 @@
 
 Analyze job descriptions to extract in-demand skills, then compare them to a candidate’s skills to identify gaps.
 
+## Live demo
+- Streamlit app: `https://job-skill-gap-analyzer-acfaj3syywwhdfc2faf7u.streamlit.app/`
+
 ## What this repo includes
 - `data/jobs_sample.csv`: tiny sample dataset you can run immediately
 - `skill_taxonomy/skills.json`: curated skill dictionary (editable)
