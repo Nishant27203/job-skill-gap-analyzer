@@ -1,0 +1,4 @@
+job_id,title,description
+1,Data Scientist,"We are looking for a Data Scientist with strong Python and SQL skills. Experience with machine learning, scikit-learn, and data visualization (Plotly/Matplotlib) required. Nice to have: AWS, Docker."
+2,Data Analyst,"Responsibilities include data analysis using Excel and SQL, building dashboards in Power BI, and presenting insights. Python and pandas are a plus. Familiarity with Git is preferred."
+3,ML Engineer,"Build and deploy ML pipelines. Required: Python, machine learning, deep learning (PyTorch/TensorFlow), Docker, Kubernetes, and cloud (AWS or GCP). Bonus: Spark, Linux."

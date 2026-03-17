@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+outputs/
+.streamlit_candidate_skills.txt
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+.idea/
+.vscode/
