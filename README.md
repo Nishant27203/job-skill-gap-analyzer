@@ -1,30 +1,37 @@
 # Job Skill Gap Analyzer
 
-Analyze job descriptions to extract in-demand skills, then compare them to a candidate’s skills to identify gaps.
+An end-to-end **NLP + analytics** web app that extracts skills from job descriptions, measures what’s trending in the market, and compares it with a candidate’s skills to highlight the **skill gap**.
 
-## Live demo
-- Streamlit app: `https://job-skill-gap-analyzer-bcnhhwxboav4mewn75jbzl.streamlit.app/`
+- **Live demo (Streamlit)**: `https://job-skill-gap-analyzer-bcnhhwxboav4mewn75jbzl.streamlit.app/`
+- **Tech stack**: Python, Pandas, spaCy (tokenization), Plotly, Streamlit
 
-## What this repo includes
-- `data/jobs_sample.csv`: tiny sample dataset you can run immediately
-- `skill_taxonomy/skills.json`: curated skill dictionary (editable)
-- `src/jobskill/analyze.py`: CLI to run extraction + gap analysis + charts
-- `app.py`: Streamlit web app (upload CSV + interactive analysis)
+## Features
+- **Upload any job dataset CSV** (robust column auto-detection + safe fallbacks)
+- **Skill extraction** using a curated taxonomy (`skill_taxonomy/skills.json`)
+- **Market demand analytics**: top skills, counts, and % of postings
+- **Candidate vs required skills**: missing skills + ranked recommendations
+- **Forecasting (optional)**: predicts future demand when a valid date column exists
+- **Export**: download CSV/JSON reports directly from the UI
 
-## Setup
+## Project structure
+- `app.py`: Streamlit dashboard (web app)
+- `src/jobskill/core.py`: reusable analysis engine (used by web + CLI)
+- `src/jobskill/analyze.py`: CLI runner (batch mode)
+- `skill_taxonomy/skills.json`: skills + synonyms dictionary (editable)
+- `data/jobs_sample.csv`: small sample dataset
+- `runtime.txt`: pins Python version for Streamlit Cloud
+
+## Quickstart (local)
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-## Run (web app)
-```bash
-source .venv/bin/activate
 streamlit run app.py
 ```
 
-## Run (sample)
+## CLI usage (optional)
+
 ```bash
 python -m src.jobskill.analyze \
   --jobs-csv data/jobs_sample.csv \
@@ -35,36 +42,40 @@ python -m src.jobskill.analyze \
   --out-dir outputs
 ```
 
-## Outputs
-- `outputs/top_skills.csv`: market demand table
-- `outputs/skill_gap.json`: required vs candidate vs missing skills
-- `outputs/top_skills.png`: bar chart
-- `outputs/top_skills.html`: interactive chart
-- `outputs/skill_comparison.csv`: required skills with candidate coverage
-- `outputs/missing_skills_ranked.csv`: missing skills ranked by demand
-- `outputs/skill_comparison.png`: required vs missing chart
-- `outputs/skill_comparison.html`: interactive required vs missing chart
+## Outputs (CLI and/or UI downloads)
+- `top_skills.csv`: market demand table
+- `skill_gap.json`: required vs candidate vs missing skills
+- `missing_skills_ranked.csv`: missing skills ranked by demand
+- `skill_comparison.csv`: required skills with candidate coverage
 
-## Useful options
-- Filter by role/title:
+## Deployment
 
-```bash
-python -m src.jobskill.analyze --jobs-csv data/jobs_sample.csv --text-column description --title-column title --role-filter "Data Scientist"
-```
+### Streamlit Community Cloud (recommended)
+- Create a new Streamlit app from this repo
+- **Main file path**: `app.py`
+- **Python**: 3.12 (already enforced via `runtime.txt`)
 
-- Define “required skills” by demand threshold (instead of simple union):
+### Docker (optional)
 
 ```bash
-python -m src.jobskill.analyze --jobs-csv data/jobs_sample.csv --text-column description --title-column title --min-required-percent 40 --min-required-count 1
+docker build -t job-skill-gap-analyzer .
+docker run -p 8501:8501 job-skill-gap-analyzer
 ```
 
-- Load candidate skills from a file:
+## Customize the skill taxonomy
+Edit `skill_taxonomy/skills.json` to add new skills and synonyms, for example:
 
-```bash
-python -m src.jobskill.analyze --jobs-csv data/jobs_sample.csv --text-column description --title-column title --candidate-file data/candidate_skills.txt
+```json
+{
+  "python": ["python", "py"],
+  "power bi": ["power bi", "powerbi"]
+}
 ```
 
-## Notes
-- Skill extraction uses a lightweight approach: text normalization + spaCy tokenization + matching against `skill_taxonomy/skills.json`.
-- To improve accuracy, expand the taxonomy (add synonyms) and/or plug in a dedicated NER / skill extraction model later.
+## Notes & limitations
+- Skill extraction is dictionary-based for **speed + explainability**. Accuracy improves as you expand the taxonomy.
+- Forecasting is a simple trend model intended for **guidance**, not a guarantee of market outcomes.
+
+## License
+MIT. See `LICENSE`.
 
